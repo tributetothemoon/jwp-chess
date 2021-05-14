@@ -51,7 +51,12 @@ class ChessGameServiceTest {
         // given
         long gameId = chessGameService.createNewGame("test title").getGameId();
 
+        // when
         RunningGameDto runningGameDto = chessGameService.loadChessGame(gameId);
+
+        // then
+        assertThat(runningGameDto).isNotNull();
+        assertThat(runningGameDto).isInstanceOf(RunningGameDto.class);
     }
 
     @Test
