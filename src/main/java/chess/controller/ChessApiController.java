@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-public class ChessRestController {
+public class ChessApiController {
     private final ChessGameService chessGameService;
 
-    public ChessRestController(ChessGameService chessGameService) {
+    public ChessApiController(ChessGameService chessGameService) {
         this.chessGameService = chessGameService;
     }
 
