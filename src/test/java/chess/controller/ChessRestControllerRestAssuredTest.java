@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource("classpath:application-test.properties")
 public class ChessRestControllerRestAssuredTest {
     @LocalServerPort
-    int port;
+    private int port;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
