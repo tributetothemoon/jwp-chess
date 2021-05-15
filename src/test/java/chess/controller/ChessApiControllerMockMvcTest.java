@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 @AutoConfigureMockMvc
-class ChessRestControllerMockMvcTest {
+public class ChessApiControllerMockMvcTest {
     @Autowired
     private MockMvc mockMvc;
 
