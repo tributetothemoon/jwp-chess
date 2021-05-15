@@ -13,7 +13,7 @@ public class PieceDto {
         this.color = color;
     }
 
-    public static PieceDto from(Piece piece){
+    public static PieceDto from(Piece piece) {
         return new PieceDto(piece.getName(), piece.getColor().name());
     }
 

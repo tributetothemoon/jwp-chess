@@ -1,4 +1,3 @@
-
 package chess.repository.dao;
 
 import chess.domain.ChessGameManager;

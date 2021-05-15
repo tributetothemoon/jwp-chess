@@ -1,10 +1,10 @@
 package chess.domain.piece.strategy;
 
+import chess.domain.exception.InvalidMoveStrategyException;
 import chess.domain.order.MoveRoute;
 import chess.domain.piece.Color;
 import chess.domain.position.Direction;
 import chess.domain.position.Rank;
-import chess.domain.exception.InvalidMoveStrategyException;
 
 public class PawnMoveStrategy extends DefaultMoveStrategy {
     public static final int PAWN_MAXIMUM_MOVABLE_ROUTE_LENGTH = 3;
