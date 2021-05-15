@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,6 +35,7 @@ public class ChessApiControllerMockMvcTest {
     private ObjectMapper objectMapper;
 
     private RandomGameIdGenerator randomGameIdGenerator = new RandomGameIdGenerator();
+    private RandomPositionGenerator randomPositionGenerator = new RandomPositionGenerator();
 
     @DisplayName("게임 생성 시 빈 제목의 게임을 생성 요청할 경우 400 코드를 응답한다.")
     @Test
@@ -58,7 +60,10 @@ public class ChessApiControllerMockMvcTest {
     void movePieceTest() throws Exception {
         long gameId = randomGameIdGenerator.generateValidRandomGameId();
 
-        String content = objectMapper.writeValueAsString(new MoveRequest(gameId, "a2", "a4"));
+        String fromPosition = randomPositionGenerator.generateRandomPosition();
+        String toPosition = randomPositionGenerator.generateRandomPosition();
+
+        String content = objectMapper.writeValueAsString(new MoveRequest(gameId, fromPosition, toPosition));
         
         this.mockMvc.perform(put("/games/" + gameId +  "/pieces")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -83,12 +88,36 @@ public class ChessApiControllerMockMvcTest {
     }
 
     private static class RandomGameIdGenerator {
+        private static long LOWER_BOUND = 1;
+        private static long UPPER_BOUND = Long.MAX_VALUE;
+
         long generateValidRandomGameId() {
-            return ThreadLocalRandom.current().nextLong(Long.MAX_VALUE - 1) + 1;
+            return ThreadLocalRandom.current().nextLong(UPPER_BOUND - LOWER_BOUND) + LOWER_BOUND;
         }
 
         long generateInvalidRandomGameId() {
-            return (-1) * ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
+            return (-1) * ThreadLocalRandom.current().nextLong(UPPER_BOUND);
         }
+    }
+
+    private static class RandomPositionGenerator {
+        private static String FILES = "abcedfgh";
+        private static int RANK_MIN = 1;
+        private static int RANK_MAX = 8;
+
+        private Random random;
+
+        public RandomPositionGenerator() {
+            this.random = new Random();
+        }
+
+        private int generateRandomInt(int lowerBound, int upperBound) {
+            return random.nextInt(upperBound - lowerBound) + lowerBound;
+        }
+
+        public String generateRandomPosition() {
+            return Character.toString(FILES.charAt(generateRandomInt(RANK_MIN, RANK_MAX))) + generateRandomInt(RANK_MIN, RANK_MAX);
+        }
+
     }
 }
