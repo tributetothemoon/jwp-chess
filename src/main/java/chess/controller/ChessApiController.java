@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.dto.*;
+import chess.exception.InvalidGameIdRangeException;
 import chess.exception.NullTitleException;
 import chess.service.ChessGameService;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +38,17 @@ public class ChessApiController {
 
     @GetMapping("/games/{gameId}")
     public ResponseEntity<CommonResponse<RunningGameDto>> loadGame(@PathVariable long gameId) {
+        validateGameIdRange(gameId);
         return ResponseEntity.ok(
                 new CommonResponse<>(
                         "게임을 불러왔습니다",
                         chessGameService.loadChessGame(gameId)));
+    }
+
+    private void validateGameIdRange(long gameId) {
+        if (gameId <= 0) {
+            throw new InvalidGameIdRangeException("유효하지 않은 범위의 game id 값을 요청했습니다.");
+        }
     }
 
     @PutMapping("/games/{gameId}/pieces")
