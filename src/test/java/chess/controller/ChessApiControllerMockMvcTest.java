@@ -111,12 +111,12 @@ public class ChessApiControllerMockMvcTest {
             this.random = new Random();
         }
 
-        private int generateRandomInt(int lowerBound, int upperBound) {
-            return random.nextInt(upperBound - lowerBound) + lowerBound;
+        private int generateRandomInt() {
+            return random.nextInt(RandomPositionGenerator.RANK_MAX - RandomPositionGenerator.RANK_MIN) + RandomPositionGenerator.RANK_MIN;
         }
 
         public String generateRandomPosition() {
-            return Character.toString(FILES.charAt(generateRandomInt(RANK_MIN, RANK_MAX))) + generateRandomInt(RANK_MIN, RANK_MAX);
+            return Character.toString(FILES.charAt(generateRandomInt())) + generateRandomInt();
         }
 
     }
