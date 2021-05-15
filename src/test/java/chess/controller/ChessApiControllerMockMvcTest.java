@@ -101,7 +101,7 @@ public class ChessApiControllerMockMvcTest {
     }
 
     private static class RandomPositionGenerator {
-        private static final String FILES = "abcedfgh";
+        private static final String FILES = "abcdefgh";
         private static final int RANK_MIN = 1;
         private static final int RANK_MAX = 8;
 
