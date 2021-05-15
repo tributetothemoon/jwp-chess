@@ -46,7 +46,7 @@ public class ChessApiController {
     }
 
     private void validateGameIdRange(long gameId) {
-        if (gameId <= 0) {
+        if (gameId <= 0L) {
             throw new InvalidGameIdRangeException("유효하지 않은 범위의 game id 값을 요청했습니다.");
         }
     }
