@@ -88,8 +88,8 @@ public class ChessApiControllerMockMvcTest {
     }
 
     private static class RandomGameIdGenerator {
-        private static long LOWER_BOUND = 1;
-        private static long UPPER_BOUND = Long.MAX_VALUE;
+        private static final long LOWER_BOUND = 1;
+        private static final long UPPER_BOUND = Long.MAX_VALUE;
 
         long generateValidRandomGameId() {
             return ThreadLocalRandom.current().nextLong(UPPER_BOUND - LOWER_BOUND) + LOWER_BOUND;
@@ -101,11 +101,11 @@ public class ChessApiControllerMockMvcTest {
     }
 
     private static class RandomPositionGenerator {
-        private static String FILES = "abcedfgh";
-        private static int RANK_MIN = 1;
-        private static int RANK_MAX = 8;
+        private static final String FILES = "abcedfgh";
+        private static final int RANK_MIN = 1;
+        private static final int RANK_MAX = 8;
 
-        private Random random;
+        private final Random random;
 
         public RandomPositionGenerator() {
             this.random = new Random();
