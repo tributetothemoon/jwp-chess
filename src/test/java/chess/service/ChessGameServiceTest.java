@@ -24,15 +24,6 @@ class ChessGameServiceTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    @Value("${spring.datasource.driver-class-name}")
-//    private String driver;
-//    @Value("${spring.datasource.url}")
-//    private String dataSourceUrl;
-//    @Value("${spring.datasource.username}")
-//    private String userName;
-//    @Value("${spring.datasource.password}")
-//    private String userPassword;
-
     @Test
     @DisplayName("새로운 게임을 생성한다.")
     void createNewGameTest() {
