@@ -1,7 +1,7 @@
 package chess.domain.piece;
 
-import chess.domain.order.MoveRoute;
 import chess.domain.exception.NullObjectSelectionException;
+import chess.domain.order.MoveRoute;
 
 public class Blank extends Piece {
     private static final String BLANK_NAME = ".";

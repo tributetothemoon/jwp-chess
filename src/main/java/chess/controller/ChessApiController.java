@@ -39,6 +39,7 @@ public class ChessApiController {
     @GetMapping("/games/{gameId}")
     public ResponseEntity<CommonResponse<RunningGameDto>> loadGame(@PathVariable long gameId) {
         validateGameIdRange(gameId);
+
         return ResponseEntity.ok(
                 new CommonResponse<>(
                         "게임을 불러왔습니다",

@@ -2,24 +2,27 @@ package chess.domain;
 
 import chess.domain.board.BoardFactory;
 import chess.domain.board.ChessBoard;
+import chess.domain.exception.DomainException;
+import chess.domain.exception.InvalidStateException;
+import chess.domain.exception.InvalidTurnException;
+import chess.domain.exception.NullObjectSelectionException;
 import chess.domain.order.MoveResult;
 import chess.domain.piece.Color;
 import chess.domain.piece.ColoredPieces;
 import chess.domain.piece.Piece;
 import chess.domain.position.Position;
-import chess.domain.state.*;
+import chess.domain.state.GameEnd;
+import chess.domain.state.State;
+import chess.domain.state.StateFactory;
 import chess.domain.statistics.ChessGameStatistics;
 import chess.domain.statistics.MatchResult;
-import chess.domain.exception.DomainException;
-import chess.domain.exception.InvalidStateException;
-import chess.domain.exception.InvalidTurnException;
-import chess.domain.exception.NullObjectSelectionException;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 public class ChessGameManager {
     private ChessBoard chessBoard;
