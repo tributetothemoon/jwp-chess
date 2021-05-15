@@ -15,7 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-test.properties")
-public class ChessRestControllerApiAssuredTest {
+public class ChessApiControllerAssuredTest {
     @LocalServerPort
     private int port;
 
