@@ -88,7 +88,7 @@ public class ChessApiControllerMockMvcTest {
         }
 
         long generateInvalidRandomGameId() {
-            return (-1) * ThreadLocalRandom.current().nextLong(Long.MAX_VALUE - 1) + 1;
+            return (-1) * ThreadLocalRandom.current().nextLong(Long.MAX_VALUE);
         }
     }
 }
