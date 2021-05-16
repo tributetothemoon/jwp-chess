@@ -1,7 +1,9 @@
 package chess.controller.advice;
 
 import chess.dto.ErrorResponse;
+import chess.dto.ParameterValidationErrorResponse;
 import chess.exception.HandledException;
+import chess.exception.RequiredParameterValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +11,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ChessControllerAdvice {
+    @ExceptionHandler
+    public ResponseEntity<ParameterValidationErrorResponse> handleParameterValidationErrorResponse(RequiredParameterValidationException e) {
+        return ResponseEntity.badRequest()
+                .body(new ParameterValidationErrorResponse(
+                        e.getMessage(),
+                        e.getCauses()));
+    }
+
     @ExceptionHandler(HandledException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(HandledException e) {
         return ResponseEntity.badRequest()

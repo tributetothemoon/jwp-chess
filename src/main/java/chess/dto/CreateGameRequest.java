@@ -1,6 +1,9 @@
 package chess.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class CreateGameRequest {
+    @NotEmpty
     private String title;
 
     public CreateGameRequest() {

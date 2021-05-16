@@ -3,11 +3,14 @@ package chess.controller;
 import chess.dto.*;
 import chess.exception.InvalidGameIdRangeException;
 import chess.exception.NullTitleException;
+import chess.exception.RequiredParameterValidationException;
 import chess.service.ChessGameService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -19,7 +22,7 @@ public class ChessApiController {
     }
 
     @PostMapping("/games")
-    public ResponseEntity<CommonResponse<NewGameDto>> newGame(@RequestBody CreateGameRequest createGameRequest) {
+    public ResponseEntity<CommonResponse<NewGameDto>> newGame(@RequestBody @Valid CreateGameRequest createGameRequest, BindingResult bindingResult) {
         validateTitleIsNotNull(createGameRequest.getTitle());
 
         NewGameDto newGameDto = chessGameService.createNewGame(createGameRequest.getTitle());
@@ -53,7 +56,11 @@ public class ChessApiController {
     }
 
     @PutMapping("/games/{gameId}/pieces")
-    public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody MoveRequest moveRequest) {
+    public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody @Valid MoveRequest moveRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw RequiredParameterValidationException.from(bindingResult);
+        }
+
         validateGameIdRange(gameId);
 
         String from = moveRequest.getFrom();
