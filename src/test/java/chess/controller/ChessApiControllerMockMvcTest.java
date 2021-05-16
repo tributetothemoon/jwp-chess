@@ -14,11 +14,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -69,6 +71,22 @@ public class ChessApiControllerMockMvcTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk());
+    }
+
+    @DisplayName("기물 이동 요청 시 좌표 값이 누락되면 Bad Request로 응답한다.")
+    @Test
+    void movePieceParameterValidationTest() throws Exception {
+        long gameId = randomGameIdGenerator.generateValidRandomGameId();
+
+        String content = objectMapper.writeValueAsString(new MoveRequest(gameId, null, null));
+
+        ResultActions perform = this.mockMvc.perform(put("/games/" + gameId + "/pieces")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content));
+
+        perform.andExpect(status().isBadRequest());
+        perform.andExpect(jsonPath("$.causes.from").value("must not be empty"));
+        perform.andExpect(jsonPath("$.causes.to").value("must not be empty"));
     }
 
     @DisplayName("특정 게임 불러오기 요청 API 테스트")

@@ -1,8 +1,12 @@
 package chess.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class MoveRequest {
     private long gameId;
+    @NotEmpty
     private String from;
+    @NotEmpty
     private String to;
 
     public MoveRequest() {
