@@ -65,7 +65,7 @@ public class ChessApiControllerMockMvcTest {
         String fromPosition = randomPositionGenerator.generateRandomPosition();
         String toPosition = randomPositionGenerator.generateRandomPosition();
 
-        String content = objectMapper.writeValueAsString(new MoveRequest(gameId, fromPosition, toPosition));
+        String content = objectMapper.writeValueAsString(new MoveRequest(fromPosition, toPosition));
         
         this.mockMvc.perform(put("/games/" + gameId +  "/pieces")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ public class ChessApiControllerMockMvcTest {
     void movePieceParameterValidationTest() throws Exception {
         long gameId = randomGameIdGenerator.generateValidRandomGameId();
 
-        String content = objectMapper.writeValueAsString(new MoveRequest(gameId, null, null));
+        String content = objectMapper.writeValueAsString(new MoveRequest(null, null));
 
         ResultActions perform = this.mockMvc.perform(put("/games/" + gameId + "/pieces")
                 .contentType(MediaType.APPLICATION_JSON)
