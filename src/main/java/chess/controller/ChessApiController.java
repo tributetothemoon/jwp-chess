@@ -54,6 +54,8 @@ public class ChessApiController {
 
     @PutMapping("/games/{gameId}/pieces")
     public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody MoveRequest moveRequest) {
+        validateGameIdRange(gameId);
+
         String from = moveRequest.getFrom();
         String to = moveRequest.getTo();
 
