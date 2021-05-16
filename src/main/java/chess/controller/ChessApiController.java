@@ -2,11 +2,9 @@ package chess.controller;
 
 import chess.dto.*;
 import chess.exception.InvalidGameIdRangeException;
-import chess.exception.NullTitleException;
 import chess.exception.RequiredParameterValidationException;
 import chess.service.ChessGameService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,7 @@ public class ChessApiController {
 
     @PostMapping("/games")
     public ResponseEntity<CommonResponse<NewGameDto>> newGame(@RequestBody @Valid CreateGameRequest createGameRequest, BindingResult bindingResult) {
-        validateTitleIsNotNull(createGameRequest.getTitle());
+        validateRequestedParameter(bindingResult);
 
         NewGameDto newGameDto = chessGameService.createNewGame(createGameRequest.getTitle());
 
@@ -31,12 +29,6 @@ public class ChessApiController {
                 .body(new CommonResponse<>(
                         "새로운 게임이 생성되었습니다.",
                         newGameDto));
-    }
-
-    private void validateTitleIsNotNull(String title) {
-        if (!StringUtils.hasText(title)) {
-            throw new NullTitleException("게임 제목이 없습니다.");
-        }
     }
 
     @GetMapping("/games/{gameId}")
@@ -49,17 +41,9 @@ public class ChessApiController {
                         chessGameService.loadChessGame(gameId)));
     }
 
-    private void validateGameIdRange(long gameId) {
-        if (gameId <= 0L) {
-            throw new InvalidGameIdRangeException("유효하지 않은 범위의 game id 값을 요청했습니다.");
-        }
-    }
-
     @PutMapping("/games/{gameId}/pieces")
     public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody @Valid MoveRequest moveRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw RequiredParameterValidationException.from(bindingResult);
-        }
+        validateRequestedParameter(bindingResult);
 
         validateGameIdRange(gameId);
 
@@ -78,5 +62,17 @@ public class ChessApiController {
                 new CommonResponse<>(
                         "게임 목록을 불러왔습니다.",
                         chessGameService.loadAllGames()));
+    }
+
+    private void validateRequestedParameter(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw RequiredParameterValidationException.from(bindingResult);
+        }
+    }
+
+    private void validateGameIdRange(long gameId) {
+        if (gameId <= 0L) {
+            throw new InvalidGameIdRangeException("유효하지 않은 범위의 game id 값을 요청했습니다.");
+        }
     }
 }
