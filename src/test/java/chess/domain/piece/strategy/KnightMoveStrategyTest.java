@@ -32,7 +32,7 @@ class KnightMoveStrategyTest {
             "d4, b3, WWS"})
     void knightCanMoveTest(String from, String to, String testCaseDescription) {
         // given
-        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>(){{
+        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>() {{
             put(Position.of("d4"), new Knight(Color.WHITE));
         }});
         Piece pieceToMove = this.chessBoard.getPieceByPosition(Position.of(from));
@@ -50,7 +50,7 @@ class KnightMoveStrategyTest {
     @CsvSource({"d4, b4", "d4, e4"})
     void throwExceptionWhenWrongDirection(String from, String to) {
         // given
-        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>(){{
+        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>() {{
             put(Position.of("d4"), new Knight(Color.WHITE));
         }});
 
@@ -64,7 +64,7 @@ class KnightMoveStrategyTest {
     @Test
     void throwExceptionWhenMoveToSameTeam() {
         // given
-        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>(){{
+        this.chessBoard = ChessBoard.from(new HashMap<Position, Piece>() {{
             put(Position.of("d4"), new Knight(Color.WHITE));
             put(Position.of("e6"), new Knight(Color.WHITE));
         }});
