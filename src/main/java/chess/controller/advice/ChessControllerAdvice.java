@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ChessControllerAdvice {
-    @ExceptionHandler
+    @ExceptionHandler(RequiredParameterValidationException.class)
     public ResponseEntity<ParameterValidationErrorResponse> handleParameterValidationErrorResponse(RequiredParameterValidationException e) {
         return ResponseEntity.badRequest()
                 .body(new ParameterValidationErrorResponse(
