@@ -27,17 +27,12 @@ CREATE TABLE `game` (
   `title` varchar(64) NOT NULL,
   `turn` varchar(16) NOT NULL,
   PRIMARY KEY (`game_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `game`
 --
-
-LOCK TABLES `game` WRITE;
-/*!40000 ALTER TABLE `game` DISABLE KEYS */;
-/*!40000 ALTER TABLE `game` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `piece`
@@ -53,19 +48,13 @@ CREATE TABLE `piece` (
   `color` varchar(16) NOT NULL,
   `position` varchar(8) NOT NULL,
   PRIMARY KEY (`piece_id`),
-  KEY `game_id` (`game_id`),
-  CONSTRAINT `piece_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `game` (`game_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  FOREIGN KEY (`game_id`) REFERENCES `game` (`game_id`) ON DELETE CASCADE
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `piece`
 --
-
-LOCK TABLES `piece` WRITE;
-/*!40000 ALTER TABLE `piece` DISABLE KEYS */;
-/*!40000 ALTER TABLE `piece` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
