@@ -1,25 +1,27 @@
 package chess.controller;
 
 import chess.dto.*;
-import chess.exception.NullTitleException;
+import chess.exception.InvalidGameIdRangeException;
+import chess.exception.RequiredParameterValidationException;
 import chess.service.ChessGameService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-public class ChessRestController {
+public class ChessApiController {
     private final ChessGameService chessGameService;
 
-    public ChessRestController(ChessGameService chessGameService) {
+    public ChessApiController(ChessGameService chessGameService) {
         this.chessGameService = chessGameService;
     }
 
     @PostMapping("/games")
-    public ResponseEntity<CommonResponse<NewGameDto>> newGame(@RequestBody CreateGameRequest createGameRequest) {
-        validateTitleIsNotNull(createGameRequest.getTitle());
+    public ResponseEntity<CommonResponse<NewGameDto>> newGame(@RequestBody @Valid CreateGameRequest createGameRequest, BindingResult bindingResult) {
+        validateRequestedParameter(bindingResult);
 
         NewGameDto newGameDto = chessGameService.createNewGame(createGameRequest.getTitle());
 
@@ -29,14 +31,10 @@ public class ChessRestController {
                         newGameDto));
     }
 
-    private void validateTitleIsNotNull(String title) {
-        if (!StringUtils.hasText(title)) {
-            throw new NullTitleException("게임 제목이 없습니다.");
-        }
-    }
-
     @GetMapping("/games/{gameId}")
     public ResponseEntity<CommonResponse<RunningGameDto>> loadGame(@PathVariable long gameId) {
+        validateGameIdRange(gameId);
+
         return ResponseEntity.ok(
                 new CommonResponse<>(
                         "게임을 불러왔습니다",
@@ -44,7 +42,11 @@ public class ChessRestController {
     }
 
     @PutMapping("/games/{gameId}/pieces")
-    public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody MoveRequest moveRequest) {
+    public ResponseEntity<CommonResponse<RunningGameDto>> move(@PathVariable long gameId, @RequestBody @Valid MoveRequest moveRequest, BindingResult bindingResult) {
+        validateRequestedParameter(bindingResult);
+
+        validateGameIdRange(gameId);
+
         String from = moveRequest.getFrom();
         String to = moveRequest.getTo();
 
@@ -60,5 +62,17 @@ public class ChessRestController {
                 new CommonResponse<>(
                         "게임 목록을 불러왔습니다.",
                         chessGameService.loadAllGames()));
+    }
+
+    private void validateRequestedParameter(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw RequiredParameterValidationException.from(bindingResult);
+        }
+    }
+
+    private void validateGameIdRange(long gameId) {
+        if (gameId <= 0L) {
+            throw new InvalidGameIdRangeException("유효하지 않은 범위의 game id 값을 요청했습니다.");
+        }
     }
 }

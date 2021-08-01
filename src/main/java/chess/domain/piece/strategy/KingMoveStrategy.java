@@ -1,8 +1,8 @@
 package chess.domain.piece.strategy;
 
+import chess.domain.exception.InvalidMoveStrategyException;
 import chess.domain.order.MoveRoute;
 import chess.domain.position.Direction;
-import chess.domain.exception.InvalidMoveStrategyException;
 
 public class KingMoveStrategy extends DefaultMoveStrategy {
     public static final int KING_MOVABLE_ROUTE_LENGTH = 2;

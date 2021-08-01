@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ColoredPiecesTest {
-    ColoredPieces coloredPieces;
+    private ColoredPieces coloredPieces;
 
     @BeforeEach
     void setUp() {

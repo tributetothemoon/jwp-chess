@@ -62,7 +62,7 @@ class PieceDaoTest {
         pieceDao.savePieces(chessGameManager, gameId);
 
         //then
-        Integer rowFound = this.jdbcTemplate.queryForObject("SELECT count(*) FROM piece WHERE game_id = " + Long.toString(gameId), Integer.class);
+        Integer rowFound = this.jdbcTemplate.queryForObject("SELECT count(*) FROM piece WHERE game_id = ?", Integer.class, gameId);
         assertThat(rowFound).isEqualTo(32);
     }
 

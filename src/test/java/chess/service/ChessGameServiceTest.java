@@ -7,14 +7,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,14 +21,8 @@ class ChessGameServiceTest {
     @Autowired
     private ChessGameService chessGameService;
 
-    @Value("${spring.datasource.driver-class-name}")
-    private String driver;
-    @Value("${spring.datasource.url}")
-    private String dataSourceUrl;
-    @Value("${spring.datasource.username}")
-    private String userName;
-    @Value("${spring.datasource.password}")
-    private String userPassword;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Test
     @DisplayName("새로운 게임을 생성한다.")
@@ -51,7 +41,12 @@ class ChessGameServiceTest {
         // given
         long gameId = chessGameService.createNewGame("test title").getGameId();
 
+        // when
         RunningGameDto runningGameDto = chessGameService.loadChessGame(gameId);
+
+        // then
+        assertThat(runningGameDto).isNotNull();
+        assertThat(runningGameDto).isInstanceOf(RunningGameDto.class);
     }
 
     @Test
@@ -81,17 +76,6 @@ class ChessGameServiceTest {
 
     @AfterEach
     void flush() {
-        try {
-            Class.forName(driver);
-            Connection connection = DriverManager.getConnection(dataSourceUrl, userName, userPassword);
-            Statement statement = connection.createStatement();
-            statement.execute("DELETE FROM game");
-            statement.close();
-            connection.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
-        }
-
+        jdbcTemplate.execute("DELETE FROM game");
     }
 }

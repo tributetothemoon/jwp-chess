@@ -1,5 +1,8 @@
 package chess.domain.board;
 
+import chess.domain.exception.InvalidMoveStrategyException;
+import chess.domain.exception.NullObjectSelectionException;
+import chess.domain.exception.SamePositionChosenException;
 import chess.domain.order.MoveResult;
 import chess.domain.order.MoveRoute;
 import chess.domain.order.RouteEntry;
@@ -9,9 +12,6 @@ import chess.domain.piece.Pawn;
 import chess.domain.piece.Piece;
 import chess.domain.position.*;
 import chess.domain.statistics.ScoreTable;
-import chess.domain.exception.InvalidMoveStrategyException;
-import chess.domain.exception.NullObjectSelectionException;
-import chess.domain.exception.SamePositionChosenException;
 
 import java.util.*;
 import java.util.function.Function;
@@ -31,7 +31,7 @@ public class ChessBoard {
 
     public static ChessBoard from(Map<Position, Piece> realPiecesMap) {
         Map<Position, Piece> board = new HashMap<>(realPiecesMap);
-        for (Position position: PositionRepository.positions()) {
+        for (Position position : PositionRepository.positions()) {
             board.merge(position, new Blank(), (existPiece, newPiece) -> existPiece);
         }
         return new ChessBoard(board);
